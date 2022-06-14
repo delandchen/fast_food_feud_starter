@@ -11,19 +11,24 @@
   will-change: transform;
   transition: transform 0.2s ease;
 }
+
 .chip:active {
   transform: translateY(1px);
 }
+
 .chip:focus {
   outline: solid 2px pink;
 }
+
 .chip.active {
   background: tomato;
   color: white;
 }
+
 .chip .label {
   font-size: 18px;
 }
+
 .chip .close {
   display: none;
   position: absolute;
@@ -31,6 +36,7 @@
   right: 5px;
   font-size: 10px;
 }
+
 .chip.active .close {
   display: block;
 }

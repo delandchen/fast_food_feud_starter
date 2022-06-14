@@ -31,6 +31,24 @@ export function App() {
   const [restaurant, setRestaurant] = useState("");
   const [menuItem, setMenuItem] = useState("");
 
+  const defineInstructions = () => {
+    if (category && restaurant && menuItem) {
+      return appInfo.instructions.allSelected;
+    }
+    else if (category && restaurant) {
+      return appInfo.instructions.noSelectedItem;
+    }
+    else if (restaurant) {
+      return appInfo.instructions.onlyRestaurant;
+    }
+    else if (category) {
+      return appInfo.instructions.onlyCategory;
+    }
+    else {
+      return appInfo.instructions.start;
+    }
+  }
+
   const currentMenuItems = data.filter(object => object.food_category == category && object.restaurant == restaurant);
 
   return (
@@ -40,7 +58,7 @@ export function App() {
         <div className="categories options">
           <h2 className="title">Categories</h2>
           {categories.map((element, index) => (
-            <Chip label={element} clickEvent={() => { setCategory(element) }} isActive={(element == category) ? true : false} />
+            <Chip label={element} closeClickEvent={(e) => { e.stopPropagation(); setCategory("") }} clickEvent={() => { setCategory(element) }} isActive={(element == category) ? true : false} />
           ))
           }
         </div>
@@ -59,13 +77,13 @@ export function App() {
           <div className="restaurants options">{
             /* YOUR CODE HERE */
             restaurants.map((element, index) => (
-              <Chip label={element} clickEvent={() => setRestaurant(element)} isActive={(element == restaurant) ? true : false} />
+              <Chip label={element} closeClickEvent={(e) => { e.stopPropagation(); setRestaurant("") }} clickEvent={() => setRestaurant(element)} isActive={(element == restaurant) ? true : false} />
             ))
           }</div>
         </div>
 
         {/* INSTRUCTIONS GO HERE */
-          <Instructions instructions={appInfo.instructions.start} />
+          <Instructions instructions={defineInstructions()} />
         }
 
         {/* MENU DISPLAY */}
@@ -74,7 +92,7 @@ export function App() {
             <h2 className="title">Menu Items</h2>
             {/* YOUR CODE HERE */
               currentMenuItems.map((element, index) => (
-                <Chip label={element.item_name} clickEvent={() => setMenuItem(element)} />
+                <Chip label={element.item_name} closeClickEvent={(e) => { e.stopPropagation(); setMenuItem("") }} clickEvent={() => setMenuItem(element)} isActive={(element == menuItem) ? true : false} />
               ))
             }
           </div>
@@ -82,7 +100,7 @@ export function App() {
           {/* NUTRITION FACTS */}
           <div className="NutritionFacts nutrition-facts">{
             /* YOUR CODE HERE */
-            <NutritionalLabel item={menuItem} />
+            (menuItem) ? <NutritionalLabel item={menuItem} /> : null
           }</div>
         </div>
 
